@@ -1,0 +1,68 @@
+---
+- name: (1) check export
+  shell: |
+    bash -lc "export -p | grep KUBECONFIG"
+  register: check_export
+  changed_when: false
+
+- block:
+    - name: (2) show label before
+      shell: |
+        bash -lc "kubectl get node --show-labels"
+      register: label_before
+      changed_when: false
+    
+    - name: (3) debug show label before
+      debug:
+        var: label_before.stdout
+
+    - name: (4) label node master
+      shell: |
+        bash -lc "kubectl label node master-node {{ item }}"
+      with_items: 
+        - "{{ VAR_node_label[0].Master }}"
+        - "{{ VAR_node_label[1].Master }}"
+        - "{{ VAR_node_label[2].Master }}"
+      register: label_master
+      when:
+        - "'{{ VAR_node_label[0].Master }}' not in label_before.stdout or
+          '{{ VAR_node_label[1].Master }}' not in label_before.stdout or
+          '{{ VAR_node_label[2].Master }}' not in label_before.stdout"
+    
+    - name: (5) debug label master
+      debug:
+        var: label_master.stdout
+      when:
+        - label_master.changed
+
+    - name: (6) label node worker
+      shell: |
+        bash -lc "kubectl label node worker-node {{ item }}"
+      with_items: 
+        - "{{ VAR_node_label[0].Worker }}"
+        - "{{ VAR_node_label[1].Worker }}"
+        - "{{ VAR_node_label[2].Worker }}"
+      register: label_worker
+      when:
+        - "'{{ VAR_node_label[0].Worker }}' not in label_before.stdout or
+          '{{ VAR_node_label[1].Worker }}' not in label_before.stdout or
+          '{{ VAR_node_label[2].Worker }}' not in label_before.stdout"
+    
+    - name: (7) debug label worker
+      debug:
+        var: label_worker.stdout
+      when:
+        - label_worker.changed
+
+    - name: (8) show label after
+      shell: |
+        bash -lc "kubectl get node --show-labels"
+      register: label_after
+      changed_when: false
+    
+    - name: (9) debug show label after
+      debug:
+        var: label_after.stdout
+
+  when:
+    - "'KUBECONFIG' in check_export.stdout"

@@ -1,0 +1,36 @@
+---
+- name: (1) check export
+  shell: |
+    bash -lc "export -p | grep KUBECONFIG"
+  register: check_export
+  changed_when: false
+
+- block:
+    - name: (2) backup -o yaml
+      shell: |
+        bash -lc "kubectl get pod test -o yaml > /root/pod-test-backup.yaml"
+      args:
+        creates: "/root/pod-test-backup.yaml"
+      register: backup_o_yaml
+
+    - name: (3) set patch file
+      copy:
+        src: "{{ CPF_patch_file }}"
+        dest: "/root/patch_file.yaml"
+
+    - name: (4) patch pod
+      shell: |
+        bash -lc "kubectl patch pod test --patch-file /root/patch_file.yaml"
+      args:
+        creates: "/root/pod-test-check-patch.yaml"
+      register: patch_pod
+
+    - name: (5) check patch
+      shell: |
+        bash -lc "kubectl get pod test -o yaml > /root/pod-test-check-patch.yaml"
+      args:
+        creates: "/root/pod-test-check-patch.yaml"
+      register: check_patch
+
+  when:
+    - "'KUBECONFIG' in check_export.stdout"

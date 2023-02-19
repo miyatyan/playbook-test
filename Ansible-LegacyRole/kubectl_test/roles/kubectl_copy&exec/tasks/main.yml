@@ -1,0 +1,27 @@
+---
+- name: (1) check export
+  shell: |
+    bash -lc "export -p | grep KUBECONFIG"
+  register: check_export
+  changed_when: false
+
+- block:
+    - name: (2) cp file from VM to pod
+      shell: |
+        bash -lc "kubectl cp /root/kubectl-test.txt nginx:/."
+      register: cp_pod
+
+    - name: (3) exec pod
+      shell: |
+        bash -lc "kubectl exec -it nginx -- bash -c '{{ item }};'"
+      with_items: 
+        - "hostname"
+        - "cat /kubectl-test.txt"
+        - "ls -l $HOME"
+        - "md5sum /kubectl-test.txt | awk '{ print $1 }'" # 失敗
+      register: exec_pod
+      changed_when: false
+      ignore_errors: yes
+
+  when:
+    - "'KUBECONFIG' in check_export.stdout"

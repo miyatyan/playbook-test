@@ -1,0 +1,73 @@
+---
+- name: (1) check export
+  shell: |
+    bash -lc "export -p | grep KUBECONFIG"
+  register: check_export
+  changed_when: false
+
+- name: (2) debug export
+  debug:
+    var: check_export.stdout
+
+- name: (3) get node login shell
+  shell: |
+    bash -lc "kubectl get node -o wide"
+  register: get_node_A
+  retries: 10
+  delay: 5
+  until:
+    - "'NotReady' not in get_node_A.stdout"
+  changed_when: false
+
+- name: (4) get node not login shell
+  shell: |
+    kubectl get node -o wide
+  register: get_node_B
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  retries: 10
+  delay: 5
+  until:
+    - "'NotReady' not in get_node_B.stdout"
+  changed_when: false
+
+- name: (5) get pod login shell
+  shell: |
+    bash -lc "kubectl get pod -o wide"
+  register: get_pod_A
+  retries: 10
+  delay: 5
+  until:
+    - get_pod_A.stdout != ""
+  changed_when: false
+
+- name: (6) get pod not login shell
+  shell: |
+    kubectl get pod -o wide
+  register: get_pod_B
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  retries: 10
+  delay: 5
+  until:
+    - get_pod_B.stdout != ""
+  changed_when: false
+
+- name: (7) echo message
+  debug:
+    msg: "exportとkubectlの挙動確認OK."
+  when:
+    - get_node_A.stdout == get_node_B.stdout
+    - get_pod_A.stdout == get_pod_B.stdout
+
+- name: (8) fail task # 失敗するタスク
+  shell: |
+    kubectl get node -o wide
+  register: get_node_C
+  # environment:
+  #   KUBECONFIG: /etc/kubernetes/admin.conf
+  retries: 10
+  delay: 5
+  until:
+    - "'NotReady' not in get_node_C.stdout"
+  changed_when: false
