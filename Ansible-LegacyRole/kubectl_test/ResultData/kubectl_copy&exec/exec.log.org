@@ -1,0 +1,20 @@
+Using /etc/ansible/ansible.cfg as config file
+
+PLAY [all] *********************************************************************
+
+TASK [kubectl_copy&exec : (1) check export] ************************************
+ok: [Master] => {"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python"}, "changed": false, "cmd": "bash -lc \"export -p | grep KUBECONFIG\"\n", "delta": "0:00:00.534318", "end": "2023-02-19 12:27:37.642317", "msg": "", "rc": 0, "start": "2023-02-19 12:27:37.107999", "stderr": "", "stderr_lines": [], "stdout": "declare -x KUBECONFIG=\"/etc/kubernetes/admin.conf\"", "stdout_lines": ["declare -x KUBECONFIG=\"/etc/kubernetes/admin.conf\""]}
+
+TASK [kubectl_copy&exec : (2) cp file from VM to pod] **************************
+changed: [Master] => {"changed": true, "cmd": "bash -lc \"kubectl cp /root/kubectl-test.txt nginx:/.\"\n", "delta": "0:00:09.629028", "end": "2023-02-19 12:27:56.989043", "msg": "", "rc": 0, "start": "2023-02-19 12:27:47.360015", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [kubectl_copy&exec : (3) exec pod] ****************************************
+ok: [Master] => (item=hostname) => {"ansible_loop_var": "item", "changed": false, "cmd": "bash -lc \"kubectl exec -it nginx -- bash -c 'hostname;'\"\n", "delta": "0:00:03.400758", "end": "2023-02-19 12:28:07.919185", "item": "hostname", "msg": "", "rc": 0, "start": "2023-02-19 12:28:04.518427", "stderr": "", "stderr_lines": [], "stdout": "nginx", "stdout_lines": ["nginx"]}
+ok: [Master] => (item=cat /kubectl-test.txt) => {"ansible_loop_var": "item", "changed": false, "cmd": "bash -lc \"kubectl exec -it nginx -- bash -c 'cat /kubectl-test.txt;'\"\n", "delta": "0:00:02.212159", "end": "2023-02-19 12:28:17.405180", "item": "cat /kubectl-test.txt", "msg": "", "rc": 0, "start": "2023-02-19 12:28:15.193021", "stderr": "", "stderr_lines": [], "stdout": "Hello !!\r\r\nThis is\r\r\nkubectl-test", "stdout_lines": ["Hello !!", "", "This is", "", "kubectl-test"]}
+ok: [Master] => (item=ls -l $HOME) => {"ansible_loop_var": "item", "changed": false, "cmd": "bash -lc \"kubectl exec -it nginx -- bash -c 'ls -l $HOME;'\"\n", "delta": "0:00:02.602129", "end": "2023-02-19 12:28:28.551711", "item": "ls -l $HOME", "msg": "", "rc": 0, "start": "2023-02-19 12:28:25.949582", "stderr": "", "stderr_lines": [], "stdout": "total 0", "stdout_lines": ["total 0"]}
+failed: [Master] (item=md5sum /kubectl-test.txt | awk '{ print $1 }') => {"ansible_loop_var": "item", "changed": false, "cmd": "bash -lc \"kubectl exec -it nginx -- bash -c 'md5sum /kubectl-test.txt | awk '{ print $1 }';'\"\n", "delta": "0:00:02.960162", "end": "2023-02-19 12:28:38.847299", "item": "md5sum /kubectl-test.txt | awk '{ print $1 }'", "msg": "non-zero return code", "rc": 2, "start": "2023-02-19 12:28:35.887137", "stderr": "command terminated with exit code 2", "stderr_lines": ["command terminated with exit code 2"], "stdout": "awk: line 2: missing } near end of file", "stdout_lines": ["awk: line 2: missing } near end of file"]}
+...ignoring
+
+PLAY RECAP *********************************************************************
+Master                     : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1   
+

@@ -1,0 +1,12 @@
+/usr/local/lib/python3.6/site-packages/ansible/parsing/vault/__init__.py:44: CryptographyDeprecationWarning: Python 3.6 is no longer supported by the Python core team. Therefore, support for it is deprecated in cryptography. The next release of cryptography (40.0) will be the last to support Python 3.6.
+  from cryptography.exceptions import InvalidSignature
+[WARNING]: conditional statements should not include jinja2 templating
+delimiters such as {{ }} or {% %}. Found: '{{ VAR_node_label[0].Master }}' not
+in label_before.stdout or '{{ VAR_node_label[1].Master }}' not in
+label_before.stdout or '{{ VAR_node_label[2].Master }}' not in
+label_before.stdout
+[WARNING]: conditional statements should not include jinja2 templating
+delimiters such as {{ }} or {% %}. Found: '{{ VAR_node_label[0].Worker }}' not
+in label_before.stdout or '{{ VAR_node_label[1].Worker }}' not in
+label_before.stdout or '{{ VAR_node_label[2].Worker }}' not in
+label_before.stdout

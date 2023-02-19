@@ -1,0 +1,83 @@
+Using /etc/ansible/ansible.cfg as config file
+
+PLAY [all] *********************************************************************
+
+TASK [kubectl_patch : (1) check export] ****************************************
+ok: [Master] => {
+"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python"},
+"changed": false,
+"cmd": "bash -lc \"export -p | grep KUBECONFIG\"
+",
+"delta": "0:00:00.454074",
+"end": "2023-02-19 12:40:35.563659",
+"msg": "",
+"rc": 0,
+"start": "2023-02-19 12:40:35.109585",
+"stderr": "",
+"stderr_lines": [],
+"stdout": "declare -x KUBECONFIG=\"/etc/kubernetes/admin.conf\"",
+"stdout_lines": ["declare -x KUBECONFIG=\"/etc/kubernetes/admin.conf\""]}
+
+TASK [kubectl_patch : (2) backup -o yaml] **************************************
+changed: [Master] => {
+"changed": true,
+"cmd": "bash -lc \"kubectl get pod test -o yaml > /root/pod-test-backup.yaml\"
+",
+"delta": "0:00:04.611708",
+"end": "2023-02-19 12:40:48.572409",
+"msg": "",
+"rc": 0,
+"start": "2023-02-19 12:40:43.960701",
+"stderr": "",
+"stderr_lines": [],
+"stdout": "",
+"stdout_lines": []}
+
+TASK [kubectl_patch : (3) set patch file] **************************************
+changed: [Master] => {
+"changed": true,
+"checksum": "e5acd2c5541442496bca93ff8f5c947a0415a6eb",
+"dest": "/root/patch_file.yaml",
+"gid": 0,
+"group": "root",
+"md5sum": "ccaca62464e05e59cd6f474e03b29ce2",
+"mode": "0644",
+"owner": "root",
+"size": 76,
+"src": "/root/.ansible/tmp/ansible-tmp-1676778052.356771-90605-135216317444871/source",
+"state": "file",
+"uid": 0}
+
+TASK [kubectl_patch : (4) patch pod] *******************************************
+changed: [Master] => {
+"changed": true,
+"cmd": "bash -lc \"kubectl patch pod test --patch-file /root/patch_file.yaml\"
+",
+"delta": "0:00:01.963214",
+"end": "2023-02-19 12:41:16.408037",
+"msg": "",
+"rc": 0,
+"start": "2023-02-19 12:41:14.444823",
+"stderr": "",
+"stderr_lines": [],
+"stdout": "pod/test patched",
+"stdout_lines": ["pod/test patched"]}
+
+TASK [kubectl_patch : (5) check patch] *****************************************
+changed: [Master] => {
+"changed": true,
+"cmd": "bash -lc \"kubectl get pod test -o yaml > /root/pod-test-check-patch.yaml\"
+",
+"delta": "0:00:01.729154",
+"end": "2023-02-19 12:41:26.742299",
+"msg": "",
+"rc": 0,
+"start": "2023-02-19 12:41:25.013145",
+"stderr": "",
+"stderr_lines": [],
+"stdout": "",
+"stdout_lines": []}
+
+PLAY RECAP *********************************************************************
+Master                     : ok=5    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

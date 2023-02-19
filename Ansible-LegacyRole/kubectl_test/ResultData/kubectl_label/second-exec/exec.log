@@ -1,0 +1,119 @@
+Using /etc/ansible/ansible.cfg as config file
+
+PLAY [all] *********************************************************************
+
+TASK [kubectl_label : (1) check export] ****************************************
+ok: [Master] => {
+"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python"},
+"changed": false,
+"cmd": "bash -lc \"export -p | grep KUBECONFIG\"
+",
+"delta": "0:00:00.425310",
+"end": "2023-02-19 12:37:41.941642",
+"msg": "",
+"rc": 0,
+"start": "2023-02-19 12:37:41.516332",
+"stderr": "",
+"stderr_lines": [],
+"stdout": "declare -x KUBECONFIG=\"/etc/kubernetes/admin.conf\"",
+"stdout_lines": ["declare -x KUBECONFIG=\"/etc/kubernetes/admin.conf\""]}
+
+TASK [kubectl_label : (2) show label before] ***********************************
+ok: [Master] => {
+"changed": false,
+"cmd": "bash -lc \"kubectl get node --show-labels\"
+",
+"delta": "0:00:04.178371",
+"end": "2023-02-19 12:37:55.086794",
+"msg": "",
+"rc": 0,
+"start": "2023-02-19 12:37:50.908423",
+"stderr": "",
+"stderr_lines": [],
+"stdout": "NAME          STATUS   ROLES                  AGE   VERSION   LABELS
+master-node   Ready    control-plane,master   13d   v1.20.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,hoge=fff,kubernetes.io/arch=amd64,kubernetes.io/hostname=master-node,kubernetes.io/os=linux,mas=aaa,node-role.kubernetes.io/control-plane=,node-role.kubernetes.io/master=,sam=ccc
+worker-node   Ready    <none>                 13d   v1.20.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,dir=eee,kubernetes.io/arch=amd64,kubernetes.io/hostname=worker-node,kubernetes.io/os=linux,popo=ddd,wor=bbb",
+"stdout_lines": ["NAME          STATUS   ROLES                  AGE   VERSION   LABELS",
+"master-node   Ready    control-plane,master   13d   v1.20.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,hoge=fff,kubernetes.io/arch=amd64,kubernetes.io/hostname=master-node,kubernetes.io/os=linux,mas=aaa,node-role.kubernetes.io/control-plane=,node-role.kubernetes.io/master=,sam=ccc",
+"worker-node   Ready    <none>                 13d   v1.20.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,dir=eee,kubernetes.io/arch=amd64,kubernetes.io/hostname=worker-node,kubernetes.io/os=linux,popo=ddd,wor=bbb"]}
+
+TASK [kubectl_label : (3) debug show label before] *****************************
+ok: [Master] => {
+
+    "label_before.stdout": "NAME          STATUS   ROLES                  AGE   VERSION   LABELS
+master-node   Ready    control-plane,master   13d   v1.20.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,hoge=fff,kubernetes.io/arch=amd64,kubernetes.io/hostname=master-node,kubernetes.io/os=linux,mas=aaa,node-role.kubernetes.io/control-plane=,node-role.kubernetes.io/master=,sam=ccc
+worker-node   Ready    <none>                 13d   v1.20.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,dir=eee,kubernetes.io/arch=amd64,kubernetes.io/hostname=worker-node,kubernetes.io/os=linux,popo=ddd,wor=bbb"
+}
+
+TASK [kubectl_label : (4) label node master] ***********************************
+skipping: [Master] => (item=mas=aaa)  => {
+"ansible_loop_var": "item",
+"changed": false,
+"item": "mas=aaa",
+"skip_reason": "Conditional result was False"}
+skipping: [Master] => (item=sam=ccc)  => {
+"ansible_loop_var": "item",
+"changed": false,
+"item": "sam=ccc",
+"skip_reason": "Conditional result was False"}
+skipping: [Master] => (item=hoge=fff)  => {
+"ansible_loop_var": "item",
+"changed": false,
+"item": "hoge=fff",
+"skip_reason": "Conditional result was False"}
+
+TASK [kubectl_label : (5) debug label master] **********************************
+skipping: [Master] => {
+}
+
+TASK [kubectl_label : (6) label node worker] ***********************************
+skipping: [Master] => (item=wor=bbb)  => {
+"ansible_loop_var": "item",
+"changed": false,
+"item": "wor=bbb",
+"skip_reason": "Conditional result was False"}
+skipping: [Master] => (item=popo=ddd)  => {
+"ansible_loop_var": "item",
+"changed": false,
+"item": "popo=ddd",
+"skip_reason": "Conditional result was False"}
+skipping: [Master] => (item=dir=eee)  => {
+"ansible_loop_var": "item",
+"changed": false,
+"item": "dir=eee",
+"skip_reason": "Conditional result was False"}
+
+TASK [kubectl_label : (7) debug label worker] **********************************
+skipping: [Master] => {
+}
+
+TASK [kubectl_label : (8) show label after] ************************************
+ok: [Master] => {
+"changed": false,
+"cmd": "bash -lc \"kubectl get node --show-labels\"
+",
+"delta": "0:00:02.463720",
+"end": "2023-02-19 12:38:11.444795",
+"msg": "",
+"rc": 0,
+"start": "2023-02-19 12:38:08.981075",
+"stderr": "",
+"stderr_lines": [],
+"stdout": "NAME          STATUS   ROLES                  AGE   VERSION   LABELS
+master-node   Ready    control-plane,master   13d   v1.20.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,hoge=fff,kubernetes.io/arch=amd64,kubernetes.io/hostname=master-node,kubernetes.io/os=linux,mas=aaa,node-role.kubernetes.io/control-plane=,node-role.kubernetes.io/master=,sam=ccc
+worker-node   Ready    <none>                 13d   v1.20.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,dir=eee,kubernetes.io/arch=amd64,kubernetes.io/hostname=worker-node,kubernetes.io/os=linux,popo=ddd,wor=bbb",
+"stdout_lines": ["NAME          STATUS   ROLES                  AGE   VERSION   LABELS",
+"master-node   Ready    control-plane,master   13d   v1.20.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,hoge=fff,kubernetes.io/arch=amd64,kubernetes.io/hostname=master-node,kubernetes.io/os=linux,mas=aaa,node-role.kubernetes.io/control-plane=,node-role.kubernetes.io/master=,sam=ccc",
+"worker-node   Ready    <none>                 13d   v1.20.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,dir=eee,kubernetes.io/arch=amd64,kubernetes.io/hostname=worker-node,kubernetes.io/os=linux,popo=ddd,wor=bbb"]}
+
+TASK [kubectl_label : (9) debug show label after] ******************************
+ok: [Master] => {
+
+    "label_after.stdout": "NAME          STATUS   ROLES                  AGE   VERSION   LABELS
+master-node   Ready    control-plane,master   13d   v1.20.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,hoge=fff,kubernetes.io/arch=amd64,kubernetes.io/hostname=master-node,kubernetes.io/os=linux,mas=aaa,node-role.kubernetes.io/control-plane=,node-role.kubernetes.io/master=,sam=ccc
+worker-node   Ready    <none>                 13d   v1.20.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,dir=eee,kubernetes.io/arch=amd64,kubernetes.io/hostname=worker-node,kubernetes.io/os=linux,popo=ddd,wor=bbb"
+}
+
+PLAY RECAP *********************************************************************
+Master                     : ok=5    changed=0    unreachable=0    failed=0    skipped=4    rescued=0    ignored=0   
+

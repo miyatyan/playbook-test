@@ -1,0 +1,35 @@
+Using /etc/ansible/ansible.cfg as config file
+
+PLAY [all] *********************************************************************
+
+TASK [kubectl_export : (1) check export] ***************************************
+ok: [Master] => {"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python"}, "changed": false, "cmd": "bash -lc \"export -p | grep KUBECONFIG\"\n", "delta": "0:00:00.349056", "end": "2023-02-19 12:06:36.964590", "msg": "", "rc": 0, "start": "2023-02-19 12:06:36.615534", "stderr": "", "stderr_lines": [], "stdout": "declare -x KUBECONFIG=\"/etc/kubernetes/admin.conf\"", "stdout_lines": ["declare -x KUBECONFIG=\"/etc/kubernetes/admin.conf\""]}
+
+TASK [kubectl_export : (2) debug export] ***************************************
+ok: [Master] => {
+    "check_export.stdout": "declare -x KUBECONFIG=\"/etc/kubernetes/admin.conf\""
+}
+
+TASK [kubectl_export : (3) get node login shell] *******************************
+ok: [Master] => {"attempts": 1, "changed": false, "cmd": "bash -lc \"kubectl get node -o wide\"\n", "delta": "0:00:12.556154", "end": "2023-02-19 12:07:00.226678", "msg": "", "rc": 0, "start": "2023-02-19 12:06:47.670524", "stderr": "", "stderr_lines": [], "stdout": "NAME          STATUS   ROLES                  AGE   VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE                KERNEL-VERSION                CONTAINER-RUNTIME\nmaster-node   Ready    control-plane,master   13d   v1.20.0   192.168.0.16   <none>        CentOS Linux 7 (Core)   3.10.0-1160.83.1.el7.x86_64   docker://23.0.0\nworker-node   Ready    <none>                 13d   v1.20.0   192.168.0.17   <none>        CentOS Linux 7 (Core)   3.10.0-1160.83.1.el7.x86_64   docker://23.0.0", "stdout_lines": ["NAME          STATUS   ROLES                  AGE   VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE                KERNEL-VERSION                CONTAINER-RUNTIME", "master-node   Ready    control-plane,master   13d   v1.20.0   192.168.0.16   <none>        CentOS Linux 7 (Core)   3.10.0-1160.83.1.el7.x86_64   docker://23.0.0", "worker-node   Ready    <none>                 13d   v1.20.0   192.168.0.17   <none>        CentOS Linux 7 (Core)   3.10.0-1160.83.1.el7.x86_64   docker://23.0.0"]}
+
+TASK [kubectl_export : (4) get node not login shell] ***************************
+ok: [Master] => {"attempts": 1, "changed": false, "cmd": "kubectl get node -o wide\n", "delta": "0:00:01.121665", "end": "2023-02-19 12:07:09.276717", "msg": "", "rc": 0, "start": "2023-02-19 12:07:08.155052", "stderr": "", "stderr_lines": [], "stdout": "NAME          STATUS   ROLES                  AGE   VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE                KERNEL-VERSION                CONTAINER-RUNTIME\nmaster-node   Ready    control-plane,master   13d   v1.20.0   192.168.0.16   <none>        CentOS Linux 7 (Core)   3.10.0-1160.83.1.el7.x86_64   docker://23.0.0\nworker-node   Ready    <none>                 13d   v1.20.0   192.168.0.17   <none>        CentOS Linux 7 (Core)   3.10.0-1160.83.1.el7.x86_64   docker://23.0.0", "stdout_lines": ["NAME          STATUS   ROLES                  AGE   VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE                KERNEL-VERSION                CONTAINER-RUNTIME", "master-node   Ready    control-plane,master   13d   v1.20.0   192.168.0.16   <none>        CentOS Linux 7 (Core)   3.10.0-1160.83.1.el7.x86_64   docker://23.0.0", "worker-node   Ready    <none>                 13d   v1.20.0   192.168.0.17   <none>        CentOS Linux 7 (Core)   3.10.0-1160.83.1.el7.x86_64   docker://23.0.0"]}
+
+TASK [kubectl_export : (5) get pod login shell] ********************************
+ok: [Master] => {"attempts": 1, "changed": false, "cmd": "bash -lc \"kubectl get pod -o wide\"\n", "delta": "0:00:01.807868", "end": "2023-02-19 12:07:18.914012", "msg": "", "rc": 0, "start": "2023-02-19 12:07:17.106144", "stderr": "", "stderr_lines": [], "stdout": "NAME    READY   STATUS             RESTARTS   AGE   IP           NODE          NOMINATED NODE   READINESS GATES\nnginx   1/1     Running            0          12d   10.244.1.5   worker-node   <none>           <none>\ntest    0/1     CrashLoopBackOff   336        12d   10.244.1.4   worker-node   <none>           <none>", "stdout_lines": ["NAME    READY   STATUS             RESTARTS   AGE   IP           NODE          NOMINATED NODE   READINESS GATES", "nginx   1/1     Running            0          12d   10.244.1.5   worker-node   <none>           <none>", "test    0/1     CrashLoopBackOff   336        12d   10.244.1.4   worker-node   <none>           <none>"]}
+
+TASK [kubectl_export : (6) get pod not login shell] ****************************
+ok: [Master] => {"attempts": 1, "changed": false, "cmd": "kubectl get pod -o wide\n", "delta": "0:00:01.293547", "end": "2023-02-19 12:07:29.214330", "msg": "", "rc": 0, "start": "2023-02-19 12:07:27.920783", "stderr": "", "stderr_lines": [], "stdout": "NAME    READY   STATUS             RESTARTS   AGE   IP           NODE          NOMINATED NODE   READINESS GATES\nnginx   1/1     Running            0          12d   10.244.1.5   worker-node   <none>           <none>\ntest    0/1     CrashLoopBackOff   336        12d   10.244.1.4   worker-node   <none>           <none>", "stdout_lines": ["NAME    READY   STATUS             RESTARTS   AGE   IP           NODE          NOMINATED NODE   READINESS GATES", "nginx   1/1     Running            0          12d   10.244.1.5   worker-node   <none>           <none>", "test    0/1     CrashLoopBackOff   336        12d   10.244.1.4   worker-node   <none>           <none>"]}
+
+TASK [kubectl_export : (7) echo message] ***************************************
+ok: [Master] => {
+    "msg": "exportとkubectlの挙動確認OK."
+}
+
+TASK [kubectl_export : (8) fail task] ******************************************
+fatal: [Master]: FAILED! => {"attempts": 1, "changed": false, "cmd": "kubectl get node -o wide\n", "delta": "0:00:01.435051", "end": "2023-02-19 12:07:40.711487", "msg": "non-zero return code", "rc": 1, "start": "2023-02-19 12:07:39.276436", "stderr": "Unable to connect to the server: x509: certificate signed by unknown authority (possibly because of \"crypto/rsa: verification error\" while trying to verify candidate authority certificate \"kubernetes\")", "stderr_lines": ["Unable to connect to the server: x509: certificate signed by unknown authority (possibly because of \"crypto/rsa: verification error\" while trying to verify candidate authority certificate \"kubernetes\")"], "stdout": "", "stdout_lines": []}
+
+PLAY RECAP *********************************************************************
+Master                     : ok=7    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+
