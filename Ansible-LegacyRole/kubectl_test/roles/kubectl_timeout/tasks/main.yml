@@ -1,0 +1,30 @@
+---
+##################################################
+# /etc/ansible/ansible.cfg
+# SSH timeout
+# timeout = 60
+# 絶対にstatusがReadyにならないNodeを用意して実験
+##################################################
+
+- name: (1) check timeout if get node status
+  shell: |
+    bash -lc "kubectl get node"
+  register: get_node_A
+  retries: 60      # 60回リトライ
+  delay: 10        # 10秒間隔で
+  until:
+    - "'NotReady' not in get_node_A.stdout"
+  changed_when: false
+  ignore_errors: yes
+
+- name: (2) check timeout if get node status
+  shell: |
+    bash -lc "kubectl get node"
+  register: get_node_B
+  retries: 3       # 3回リトライ
+  delay: 400       # 400秒間隔で
+  until:
+    - "'NotReady' not in get_node_A.stdout"
+  changed_when: false
+
+# 結果：(1)(2)ともに途中でタイムアウトにならずタスクが実行された
