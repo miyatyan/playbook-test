@@ -1,0 +1,77 @@
+Using /etc/ansible/ansible.cfg as config file
+
+PLAY [all] *********************************************************************
+
+TASK [kubectl_timeout : (1) check timeout if get node status] ******************
+FAILED - RETRYING: (1) check timeout if get node status (60 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (59 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (58 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (57 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (56 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (55 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (54 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (53 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (52 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (51 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (50 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (49 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (48 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (47 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (46 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (45 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (44 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (43 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (42 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (41 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (40 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (39 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (38 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (37 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (36 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (35 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (34 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (33 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (32 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (31 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (30 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (29 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (28 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (27 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (26 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (25 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (24 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (23 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (22 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (21 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (20 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (19 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (18 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (17 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (16 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (15 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (14 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (13 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (12 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (11 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (10 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (9 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (8 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (7 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (6 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (5 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (4 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (3 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (2 retries left).
+FAILED - RETRYING: (1) check timeout if get node status (1 retries left).
+fatal: [Master]: FAILED! => {"attempts": 60, "changed": false, "cmd": "bash -lc \"kubectl get node\"\n", "delta": "0:00:00.915175", "end": "2023-02-20 23:11:45.375290", "msg": "", "rc": 0, "start": "2023-02-20 23:11:44.460115", "stderr": "", "stderr_lines": [], "stdout": "NAME          STATUS     ROLES                  AGE   VERSION\nmaster-node   Ready      control-plane,master   15d   v1.20.0\nworker-node   NotReady   <none>                 15d   v1.20.0", "stdout_lines": ["NAME          STATUS     ROLES                  AGE   VERSION", "master-node   Ready      control-plane,master   15d   v1.20.0", "worker-node   NotReady   <none>                 15d   v1.20.0"]}
+...ignoring
+
+TASK [kubectl_timeout : (2) check timeout if get node status] ******************
+FAILED - RETRYING: (2) check timeout if get node status (3 retries left).
+FAILED - RETRYING: (2) check timeout if get node status (2 retries left).
+FAILED - RETRYING: (2) check timeout if get node status (1 retries left).
+fatal: [Master]: FAILED! => {"attempts": 3, "changed": false, "cmd": "bash -lc \"kubectl get node\"\n", "delta": "0:00:02.895269", "end": "2023-02-20 23:32:28.790695", "msg": "", "rc": 0, "start": "2023-02-20 23:32:25.895426", "stderr": "", "stderr_lines": [], "stdout": "NAME          STATUS     ROLES                  AGE   VERSION\nmaster-node   Ready      control-plane,master   15d   v1.20.0\nworker-node   NotReady   <none>                 15d   v1.20.0", "stdout_lines": ["NAME          STATUS     ROLES                  AGE   VERSION", "master-node   Ready      control-plane,master   15d   v1.20.0", "worker-node   NotReady   <none>                 15d   v1.20.0"]}
+
+PLAY RECAP *********************************************************************
+Master                     : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=1   
+
