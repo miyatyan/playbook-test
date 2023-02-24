@@ -1,0 +1,21 @@
+---
+# - name: 公開鍵を登録する(ssh-copy-id) # 対話処理が走るのでエラーになる
+#   shell: |
+#     ssh-copy-id -i /root/.ssh/id_rsa.pub root@xxx.xxx.xx.xx
+#   register: ssh_copy_id
+
+- name: 公開鍵を登録する(Ansible module)
+  authorized_key:
+    user: root
+    state: present
+    key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+  register: authorized
+
+- name: check ssh connect
+  shell: |
+    timeout 7 ssh xxx.xxx.xx.xx -o StrictHostKeyChecking=no exit
+  changed_when: false
+
+- name: debug ssh connect
+  debug:
+    msg: 疎通確認完了

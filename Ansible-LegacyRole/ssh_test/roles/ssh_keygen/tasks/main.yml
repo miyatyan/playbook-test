@@ -1,0 +1,31 @@
+---
+- name: ls ~/.ssh before
+  shell: |
+    ls -la /root/.ssh
+  register: ssh_before
+  changed_when: false
+
+- name: ssh key generate
+  user: 
+    name: root
+    generate_ssh_key: yes
+  register: ssh_key_gene
+  when: 
+    - "'id_rsa' not in ssh_before.stdout"
+    - "'id_rsa.pub' not in ssh_before.stdout"
+
+- name: debug ssh key generate
+  debug:
+    var: ssh_key_gene.stdout
+  when:
+    - ssh_key_gene.changed
+
+- name: ls ~/.ssh after
+  shell: |
+    ls -la /root/.ssh
+  register: ssh_after
+  changed_when: false
+
+- name: debug ssh after
+  debug:
+    var: ssh_after.stdout
